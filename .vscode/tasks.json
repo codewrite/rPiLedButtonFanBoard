@@ -1,0 +1,47 @@
+{
+    "version": "2.0.0",
+    "options": {
+        "env": {
+            "testProject": "LedButtonLibTests"
+        }
+    },
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [ "build", "./${config:exe.Project}/${config:exe.Project}.csproj", "/property:GenerateFullPaths=true", "/consoleloggerparameters:NoSummary" ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish",
+            "type": "shell",
+            "command": "./scripts/publish.sh",
+            "args": [ "${config:exe.Project}", "${config:rpi.Name}" ],
+            "dependsOn": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "test",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [ "test", "./$testProject/$testProject.csproj" ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Set Raspberry Pi Name",
+            "type": "shell",
+            "command": "./scripts/setPiName.sh",
+            "args": [ "${input:piName}" ],
+            "problemMatcher": []
+        },
+    ],
+    "inputs": [
+        {
+            "id": "piName",
+            "type": "promptString",
+            "description": "Raspberry Pi Hostname",
+            "default": "yourPiName"
+        },
+    ]
+}

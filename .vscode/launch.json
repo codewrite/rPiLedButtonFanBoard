@@ -1,0 +1,45 @@
+{
+   // Use IntelliSense to find out which attributes exist for C# debugging
+   // Use hover for the description of the existing attributes
+   // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+   "version": "0.2.0",
+   "configurations": [
+        {
+            "name": ".NET Core Launch (remote console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "publish",
+            "program": "/usr/bin/dotnet/dotnet",
+            "args": ["${config:exe.Project}.dll", "--ledCycle"],
+            "cwd": "~/RemoteDebug/${config:exe.Project}",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "pipeTransport": {
+                "pipeCwd": "${workspaceFolder}",
+                "pipeProgram": "ssh.exe",
+                "pipeArgs": [
+                    "pi@${config:rpi.Name}"
+                ],
+                "debuggerPath": "/usr/bin/vsdbg/vsdbg"
+            }
+        },
+        {
+            // TODO: This will attempt to run/debug the app on the local dev machine which won't work unless there is a suitable gpio driver. Write a simulator.
+            "name": ".NET Core Launch (console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/${config:exe.Project}/bin/Debug/netcoreapp3.1/${config:exe.Project}.dll",
+            "args": ["--ledCycle"],
+            "cwd": "${workspaceFolder}/${config:exe.Project}",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:pickProcess}"
+        }
+    ]
+}
